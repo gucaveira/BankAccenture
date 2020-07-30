@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">BankAccenture</string>
+
+    <string name="app_title">Bank</string>
+
+    <string name="login_usuario">User</string>
+    <string name="logoin_senha">Password</string>
+
+    <string name="tv_logo">BANK</string>
+
+    <string name="login_bt">Login</string>
+    <string name="email">E-mail</string>
+    <string name="senha">Senha</string>
 </resources>
