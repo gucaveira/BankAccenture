@@ -1,6 +1,7 @@
 package com.bankaccenture
 
 import android.app.Application
+import com.bankaccenture.di.daoModule
 import com.bankaccenture.di.uiModule
 import com.bankaccenture.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -15,7 +16,8 @@ class AppApplication : Application() {
             modules(
                 listOf(
                     uiModule,
-                    viewModelModule
+                    viewModelModule,
+                    daoModule
                 )
             )
         }

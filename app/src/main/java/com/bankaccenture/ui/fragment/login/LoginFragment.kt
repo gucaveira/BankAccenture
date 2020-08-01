@@ -6,11 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import com.bankaccenture.R
-import com.bankaccenture.model.Usuario
+import com.bankaccenture.model.LoginUsuario
 import com.bankaccenture.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class LoginFragment : Fragment() {
 
@@ -36,7 +37,13 @@ class LoginFragment : Fragment() {
             val senha = login_senha.editText?.text.toString()
 
             if (validaCampos(emailCpf, senha)) {
-                loginViewModel.login(Usuario(emailCpf, senha))
+                loginViewModel.login(LoginUsuario(emailCpf, senha))
+                    .observe(viewLifecycleOwner, Observer { resource ->
+                        resource?.let {
+                            val dado = it.dado
+                            Toast.makeText(context, "${dado.name}", Toast.LENGTH_SHORT).show()
+                        }
+                    })
             }
         }
     }

@@ -1,8 +1,10 @@
 package com.bankaccenture.di
 
+import com.bankaccenture.repository.LoginRepository
+import com.bankaccenture.retrofit.webclient.WebClient
 import com.bankaccenture.ui.fragment.login.LoginFragment
 import com.bankaccenture.viewmodel.LoginViewModel
-import org.koin.android.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val uiModule = module {
@@ -10,5 +12,10 @@ val uiModule = module {
 }
 
 val viewModelModule = module {
-    viewModel<LoginViewModel> { LoginViewModel() }
+    viewModel<LoginViewModel> { LoginViewModel(get()) }
+}
+
+val daoModule = module {
+    single<LoginRepository> { LoginRepository(get()) }
+    single<WebClient> { WebClient() }
 }

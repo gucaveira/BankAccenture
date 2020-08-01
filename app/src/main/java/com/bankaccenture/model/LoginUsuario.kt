@@ -1,6 +1,6 @@
 package com.bankaccenture.model
 
-data class Usuario(
+data class LoginUsuario(
     val emailCpf: String,
     val senha: String
 )
