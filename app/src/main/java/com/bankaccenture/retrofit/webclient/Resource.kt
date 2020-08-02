@@ -1,5 +1,6 @@
 package com.bankaccenture.retrofit.webclient
 
-import com.bankaccenture.model.APIError
+import com.bankaccenture.model.ApiError
+import com.bankaccenture.model.ContaUsuario
 
-class Resource<T>( val dado: T, private val error: APIError?)
+class Resource(val userAccount: ContaUsuario? = null, val error: ApiError? = null)

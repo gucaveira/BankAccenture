@@ -2,7 +2,7 @@ package com.bankaccenture.model
 
 import java.io.Serializable
 
-data class APIError(
-    private var code: Int? = null,
-    private var mensagem: String? = null
+data class ApiError(
+    val code: Int? = null,
+    val message: String? = null
 ) : Serializable

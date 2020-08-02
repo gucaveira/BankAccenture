@@ -38,10 +38,9 @@ class LoginFragment : Fragment() {
 
             if (validaCampos(emailCpf, senha)) {
                 loginViewModel.login(LoginUsuario(emailCpf, senha))
-                    .observe(viewLifecycleOwner, Observer { resource ->
-                        resource?.let {
-                            val dado = it.dado
-                            Toast.makeText(context, "${dado.name}", Toast.LENGTH_SHORT).show()
+                    .observe(viewLifecycleOwner, Observer {
+                        it?.let {
+                            Toast.makeText(context, "${it.name}", Toast.LENGTH_SHORT).show()
                         }
                     })
             }
