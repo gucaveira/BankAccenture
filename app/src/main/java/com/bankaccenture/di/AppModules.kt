@@ -1,5 +1,6 @@
 package com.bankaccenture.di
 
+import com.bankaccenture.HomeViewModel
 import com.bankaccenture.repository.LoginRepository
 import com.bankaccenture.retrofit.webclient.WebClient
 import com.bankaccenture.ui.fragment.login.LoginFragment
@@ -13,6 +14,7 @@ val uiModule = module {
 
 val viewModelModule = module {
     viewModel<LoginViewModel> { LoginViewModel(get()) }
+    viewModel<HomeViewModel> { HomeViewModel() }
 }
 
 val daoModule = module {

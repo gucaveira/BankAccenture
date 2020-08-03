@@ -11,4 +11,7 @@
     <string name="login_bt">Login</string>
     <string name="email">E-mail</string>
     <string name="senha">Senha</string>
+    <string name="conta">Conta</string>
+    <string name="saldo">Saldo</string>
+    <string name="recentes">Recentes</string>
 </resources>
