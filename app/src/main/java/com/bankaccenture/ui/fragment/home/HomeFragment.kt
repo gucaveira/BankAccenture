@@ -1,19 +1,20 @@
-package com.bankaccenture
+package com.bankaccenture.ui.fragment.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.bankaccenture.R
+import com.bankaccenture.ui.recyclerview.adapter.HomeListaAdapter
+import com.bankaccenture.viewmodel.HomeViewModel
+import kotlinx.android.synthetic.main.home_fragment.*
 import org.koin.android.ext.android.inject
 
 class HomeFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = HomeFragment()
-    }
-
     private val viewModel by inject<HomeViewModel>()
+    private val adapter by inject<HomeListaAdapter>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,7 +25,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        home_recycler_view.adapter = adapter
     }
 
 }

@@ -1,4 +1,4 @@
-package com.bankaccenture
+package com.bankaccenture.viewmodel
 
 import androidx.lifecycle.ViewModel
 
