@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bankaccenture.model.ContaUsuario
 import com.bankaccenture.model.LoginUsuario
+import com.bankaccenture.model.Transacao
 import com.bankaccenture.retrofit.AppRetrofit
 import com.bankaccenture.retrofit.service.NetworkApiSource
 import retrofit2.Call
@@ -15,7 +16,7 @@ class WebClient(private val service: NetworkApiSource = AppRetrofit().networkApi
 
     private fun <T> execultRequisicao(
         call: Call<T>,
-        quandoSucesso: (usuario: T?) -> Unit,
+        quandoSucesso: (dado: T?) -> Unit,
         quandoFalha: (error: String?) -> Unit
     ) {
         call.enqueue(object : Callback<T> {
@@ -40,6 +41,21 @@ class WebClient(private val service: NetworkApiSource = AppRetrofit().networkApi
                     mutableLiveData.value = contaUsuario.userAccount
                 }
             }, quandoFalha = {
+
+            })
+        return mutableLiveData
+    }
+
+    fun todasTrasacoes(usuarioId: Int): LiveData<List<Transacao>?> {
+        val mutableLiveData = MutableLiveData<List<Transacao>?>()
+        execultRequisicao(
+            service.getListaTrasacoes(usuarioId),
+            quandoSucesso = { responseTransacao ->
+                responseTransacao?.let {
+                    mutableLiveData.value = it.transacoesLista
+                }
+            },
+            quandoFalha = {
 
             })
         return mutableLiveData
