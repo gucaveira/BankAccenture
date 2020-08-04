@@ -68,7 +68,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/home_textview_usuario_conta_label"
             app:layout_constraintTop_toBottomOf="@+id/home_textview_usuario_conta_label"
-            tools:text="2050 / 01.111222-4" />
+            tools:text="2050 / 01.231456-4" />
 
         <TextView
             android:id="@+id/home_textUsuario_balanco_label"

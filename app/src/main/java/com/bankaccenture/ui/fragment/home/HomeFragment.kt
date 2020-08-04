@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bankaccenture.R
 import com.bankaccenture.ui.recyclerview.adapter.HomeListaAdapter
 import com.bankaccenture.viewmodel.HomeViewModel
@@ -16,6 +18,9 @@ class HomeFragment : Fragment() {
 
     private val viewModel by inject<HomeViewModel>()
     private val adapter by inject<HomeListaAdapter>()
+    private val arguments by navArgs<HomeFragmentArgs>()
+    private val contaUsuario by lazy { arguments.usuario }
+    private val controller by lazy { findNavController() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +33,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         configuraReclyerView()
         buscarTrasacoes()
+        instanciaCampos()
+        configuraBotaoLogout()
     }
 
     private fun configuraReclyerView() {
@@ -35,11 +42,26 @@ class HomeFragment : Fragment() {
     }
 
     private fun buscarTrasacoes() {
-        TODO("mudar hardCode por id  de fato do usuario")
-        viewModel.todasTrasacoes(1).observe(viewLifecycleOwner, Observer {
-            it?.let {
-                adapter.add(it)
-            }
-        })
+        contaUsuario.userId?.let { id ->
+            viewModel.todasTrasacoes(id).observe(viewLifecycleOwner, Observer {
+                it?.let {
+                    adapter.add(it)
+                }
+            })
+        }
+    }
+
+    private fun instanciaCampos() {
+        home_textview_usuario_nome.text = contaUsuario.name
+        home_textview_usuario_conta.text = contaUsuario.bankAccount + "/ " + contaUsuario.agency
+        home_textview_usuario_balanco.text = contaUsuario.balance.toString()
+    }
+
+    private fun configuraBotaoLogout() {
+        home_bt_logout.setOnClickListener {
+            val directions =
+                HomeFragmentDirections.actionHomeFragmentToLoginFragment()
+            controller.navigate(directions)
+        }
     }
 }
