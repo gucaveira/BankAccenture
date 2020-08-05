@@ -9,6 +9,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bankaccenture.R
+import com.bankaccenture.ui.extensions.formatAgency
+import com.bankaccenture.ui.extensions.formataParaMoedaBrasileira
 import com.bankaccenture.ui.recyclerview.adapter.HomeListaAdapter
 import com.bankaccenture.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.home_fragment.*
@@ -53,8 +55,9 @@ class HomeFragment : Fragment() {
 
     private fun instanciaCampos() {
         home_textview_usuario_nome.text = contaUsuario.name
-        home_textview_usuario_conta.text = contaUsuario.bankAccount + "/ " + contaUsuario.agency
-        home_textview_usuario_balanco.text = contaUsuario.balance.toString()
+        home_textview_usuario_conta.text =
+            contaUsuario.bankAccount + "/ " + contaUsuario.agency?.formatAgency()
+        home_textview_usuario_balanco.text = contaUsuario.balance?.formataParaMoedaBrasileira()
     }
 
     private fun configuraBotaoLogout() {

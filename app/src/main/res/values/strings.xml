@@ -1,17 +1,15 @@
 <resources>
     <string name="app_name">BankAccenture</string>
-
     <string name="app_title">Bank</string>
-
-    <string name="login_usuario">User</string>
-    <string name="logoin_senha">Password</string>
-
     <string name="tv_logo">BANK</string>
-
     <string name="login_bt">Login</string>
-    <string name="email">E-mail</string>
+    <string name="usuario">Usuário</string>
     <string name="senha">Senha</string>
     <string name="conta">Conta</string>
     <string name="saldo">Saldo</string>
     <string name="recentes">Recentes</string>
+    <string name="senha_invalida">Senha inválida</string>
+    <string name="senha_em_branco">Senha em Branco</string>
+    <string name="usuario_em_branco">Usuario obrigátorio</string>
+    <string name="usuario_invalido">Usuário inválido</string>
 </resources>

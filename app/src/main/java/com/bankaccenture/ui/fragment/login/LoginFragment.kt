@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.bankaccenture.R
+import com.bankaccenture.model.ContaUsuario
 import com.bankaccenture.model.LoginUsuario
+import com.bankaccenture.utils.AppUtils
 import com.bankaccenture.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -39,16 +40,24 @@ class LoginFragment : Fragment() {
             val senha = login_senha.editText?.text.toString()
 
             if (validaCampos(emailCpf, senha)) {
-                loginViewModel.login(LoginUsuario(emailCpf, senha))
-                    .observe(viewLifecycleOwner, Observer {
-                        it?.let {
-                            val directions =
-                                LoginFragmentDirections.actionLoginFragmentToHomeFragment(it)
-                            controller.navigate(directions)
-                        }
-                    })
+                configuraViewModel(emailCpf, senha)
             }
         }
+    }
+
+    private fun configuraViewModel(emailCpf: String, senha: String) {
+        loginViewModel.login(LoginUsuario(emailCpf, senha))
+            .observe(viewLifecycleOwner, Observer {
+                it?.let {
+                    vaiParaHomeFragment(it)
+                }
+            })
+    }
+
+    private fun vaiParaHomeFragment(it: ContaUsuario) {
+        val directions =
+            LoginFragmentDirections.actionLoginFragmentToHomeFragment(it)
+        controller.navigate(directions)
     }
 
     private fun limpaCampos() {
@@ -57,25 +66,25 @@ class LoginFragment : Fragment() {
     }
 
     private fun validaCampos(emailCpf: String, senha: String): Boolean {
-        var valido = true
+        var valido: Boolean
 
         if (emailCpf.isBlank()) {
-            login_usuario.error = "Usuario inválido"
+            login_usuario.error = resources.getString(R.string.usuario_em_branco)
+            valido = false
+        } else if (AppUtils.validateCPF(emailCpf) || AppUtils.validateEmail(emailCpf)) {
+            valido = true
+        } else {
+            login_usuario.error = resources.getString(R.string.usuario_invalido)
             valido = false
         }
 
         if (senha.isBlank()) {
-            login_senha.error = "Senha inválida"
+            login_senha.error = resources.getString(R.string.senha_em_branco)
             valido = false
-        }
-        if (!isSenhaValida(senha)) {
+        } else if (!loginViewModel.isSenhaValida(senha)) {
             valido = false
-            Toast.makeText(context, "Senha dever ter minimo 6 caractere", Toast.LENGTH_SHORT).show()
+            login_senha.error = resources.getString(R.string.senha_invalida)
         }
         return valido
-    }
-
-    private fun isSenhaValida(password: String): Boolean {
-        return password.length >= 6
     }
 }
