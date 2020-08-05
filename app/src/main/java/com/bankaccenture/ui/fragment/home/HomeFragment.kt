@@ -1,9 +1,11 @@
 package com.bankaccenture.ui.fragment.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -33,10 +35,17 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        esconderTeclado()
         configuraReclyerView()
         buscarTrasacoes()
         instanciaCampos()
         configuraBotaoLogout()
+    }
+
+    private fun esconderTeclado() {
+        val inputMethodManager: InputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(getView()?.windowToken, 0)
     }
 
     private fun configuraReclyerView() {
