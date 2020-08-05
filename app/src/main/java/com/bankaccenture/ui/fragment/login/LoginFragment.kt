@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -42,6 +43,10 @@ class LoginFragment : Fragment() {
         searchUserAndPasswordSaved()
     }
 
+    private fun exibirProgress(exibir: Boolean) {
+        login_progressbar.visibility = if (exibir) View.VISIBLE else View.GONE
+    }
+
     private fun setterButtonLogin() {
         login_btn.setOnClickListener {
             clearFields()
@@ -51,6 +56,8 @@ class LoginFragment : Fragment() {
             if (validateFields(emailCpf, password)) {
                 sharedPreferenceConf(emailCpf, password)
                 setterViewModel(emailCpf, password)
+                exibirProgress(true)
+                hideKeyboard()
             }
         }
     }
@@ -60,6 +67,12 @@ class LoginFragment : Fragment() {
             login_user.editText?.setText(it.getString(KEY_EMAILCPF, ""))
             login_password.editText?.setText(it.getString(KEY_PASSWORD, ""))
         }
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager: InputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     private fun sharedPreferenceConf(emailCpf: String, password: String) {
@@ -75,12 +88,13 @@ class LoginFragment : Fragment() {
         loginViewModel.login(LoginUser(emailCpf, password))
             .observe(viewLifecycleOwner, Observer {
                 it?.let {
-                    vaiParaHomeFragment(it)
+                    goToHomeFragment(it)
                 }
             })
     }
 
-    private fun vaiParaHomeFragment(it: UserAccount) {
+    private fun goToHomeFragment(it: UserAccount) {
+        exibirProgress(false)
         val directions =
             LoginFragmentDirections.actionLoginFragmentToHomeFragment(it)
         controller.navigate(directions)
