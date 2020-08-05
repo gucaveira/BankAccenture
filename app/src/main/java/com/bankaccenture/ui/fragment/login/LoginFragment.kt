@@ -1,5 +1,7 @@
 package com.bankaccenture.ui.fragment.login
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +17,16 @@ import com.bankaccenture.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+private const val KEY_EMAILCPF = "emailCpf"
+private const val KEY_PASSWORD = "password"
+
 class LoginFragment : Fragment() {
 
     private val loginViewModel by viewModel<LoginViewModel>()
     private val controller by lazy { findNavController() }
+    private val sharedPreferences by lazy {
+        context?.getSharedPreferences("preferencia", Context.MODE_PRIVATE)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +39,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setterButtonLogin()
+        searchUserAndPasswordSaved()
     }
 
     private fun setterButtonLogin() {
@@ -40,8 +49,25 @@ class LoginFragment : Fragment() {
             val password = login_password.editText?.text.toString()
 
             if (validateFields(emailCpf, password)) {
+                sharedPreferenceConf(emailCpf, password)
                 setterViewModel(emailCpf, password)
             }
+        }
+    }
+
+    private fun searchUserAndPasswordSaved() {
+        sharedPreferences?.let {
+            login_user.editText?.setText(it.getString(KEY_EMAILCPF, ""))
+            login_password.editText?.setText(it.getString(KEY_PASSWORD, ""))
+        }
+    }
+
+    private fun sharedPreferenceConf(emailCpf: String, password: String) {
+        sharedPreferences?.let {
+            val ed: SharedPreferences.Editor = it.edit()
+            ed.putString(KEY_EMAILCPF, emailCpf)
+            ed.putString(KEY_PASSWORD, password)
+            ed.apply()
         }
     }
 

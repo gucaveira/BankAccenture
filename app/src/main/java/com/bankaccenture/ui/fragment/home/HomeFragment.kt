@@ -18,6 +18,7 @@ import com.bankaccenture.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.home_fragment.*
 import org.koin.android.ext.android.inject
 
+
 class HomeFragment : Fragment() {
 
     private val viewModel by inject<HomeViewModel>()
@@ -71,6 +72,10 @@ class HomeFragment : Fragment() {
 
     private fun setterButtonLogout() {
         home_bt_logout.setOnClickListener {
+            val prefsEditor = context?.getSharedPreferences("preferencia", 0)?.edit()
+            prefsEditor?.clear()
+            prefsEditor?.apply()
+
             val directions =
                 HomeFragmentDirections.actionHomeFragmentToLoginFragment()
             controller.navigate(directions)
