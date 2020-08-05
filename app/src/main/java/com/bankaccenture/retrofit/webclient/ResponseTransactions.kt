@@ -1,12 +1,12 @@
 package com.bankaccenture.retrofit.webclient
 
-import com.bankaccenture.model.Transacao
+import com.bankaccenture.model.Transaction
 import com.google.gson.annotations.SerializedName
 
-data class ResponseTransacao(
+data class ResponseTransactions(
 
     @field:SerializedName("statementList")
-    val transacoesLista: List<Transacao>? = null,
+    val transactionsList: List<Transaction>? = null,
 
     @field:SerializedName("error")
     val error: Error? = null

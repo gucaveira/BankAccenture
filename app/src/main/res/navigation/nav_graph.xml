@@ -20,8 +20,8 @@
         android:label="home_fragment"
         tools:layout="@layout/home_fragment" >
         <argument
-            android:name="usuario"
-            app:argType="com.bankaccenture.model.ContaUsuario" />
+            android:name="user"
+            app:argType="com.bankaccenture.model.UserAccount" />
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment"

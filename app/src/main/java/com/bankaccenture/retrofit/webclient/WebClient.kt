@@ -3,9 +3,9 @@ package com.bankaccenture.retrofit.webclient
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.bankaccenture.model.ContaUsuario
-import com.bankaccenture.model.LoginUsuario
-import com.bankaccenture.model.Transacao
+import com.bankaccenture.model.LoginUser
+import com.bankaccenture.model.Transaction
+import com.bankaccenture.model.UserAccount
 import com.bankaccenture.retrofit.AppRetrofit
 import com.bankaccenture.retrofit.service.NetworkApiSource
 import retrofit2.Call
@@ -14,49 +14,43 @@ import retrofit2.Response
 
 class WebClient(private val service: NetworkApiSource = AppRetrofit().networkApiSource) {
 
-    private fun <T> execultRequisicao(
-        call: Call<T>,
-        quandoSucesso: (dado: T?) -> Unit,
-        quandoFalha: (error: String?) -> Unit
-    ) {
+    private fun <T> exeRequest(
+        call: Call<T>, whenSuccessful: (dado: T?) -> Unit, whenFall: (error: String?) -> Unit) {
         call.enqueue(object : Callback<T> {
             override fun onFailure(call: Call<T>, throwable: Throwable) {
                 throwable.message?.let { Log.e("ERROR API", it) }
-                quandoFalha(throwable.message)
+                whenFall(throwable.message)
             }
 
             override fun onResponse(call: Call<T>, response: Response<T>) {
                 if (response.isSuccessful) {
-                    quandoSucesso(response.body())
+                    whenSuccessful(response.body())
                 }
             }
         })
     }
 
-    fun login(loginUsuario: LoginUsuario): LiveData<ContaUsuario> {
-        val mutableLiveData = MutableLiveData<ContaUsuario>()
-        execultRequisicao(service.login(loginUsuario.emailCpf, loginUsuario.senha),
-            quandoSucesso = { contaUsuario ->
-                contaUsuario?.let {
-                    mutableLiveData.value = contaUsuario.userAccount
+    fun login(loginUser: LoginUser): LiveData<UserAccount> {
+        val mutableLiveData = MutableLiveData<UserAccount>()
+        exeRequest(service.login(loginUser.emailCpf, loginUser.password),
+            whenSuccessful = { userAccount ->
+                userAccount?.let {
+                    mutableLiveData.value = userAccount.userAccount
                 }
-            }, quandoFalha = {
+            }, whenFall = {
 
             })
         return mutableLiveData
     }
 
-    fun todasTrasacoes(usuarioId: Int): LiveData<List<Transacao>?> {
-        val mutableLiveData = MutableLiveData<List<Transacao>?>()
-        execultRequisicao(
-            service.getListaTrasacoes(usuarioId),
-            quandoSucesso = { responseTransacao ->
-                responseTransacao?.let {
-                    mutableLiveData.value = it.transacoesLista
-                }
-            },
-            quandoFalha = {
-
+    fun allTransactions(userId: Int): LiveData<List<Transaction>?> {
+        val mutableLiveData = MutableLiveData<List<Transaction>?>()
+        exeRequest(service.getListTransactions(userId), whenSuccessful = { responseTransactions ->
+            responseTransactions?.let {
+                mutableLiveData.value = it.transactionsList
+            }
+        },
+            whenFall = {
             })
         return mutableLiveData
     }

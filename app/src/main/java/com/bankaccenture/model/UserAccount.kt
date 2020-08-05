@@ -3,7 +3,7 @@ package com.bankaccenture.model
 import java.io.Serializable
 import java.math.BigDecimal
 
-data class ContaUsuario(
+data class UserAccount(
     val userId: Int? = null,
     val name: String? = null,
     val bankAccount: String? = null,

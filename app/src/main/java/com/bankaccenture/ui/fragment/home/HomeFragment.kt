@@ -12,8 +12,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bankaccenture.R
 import com.bankaccenture.ui.extensions.formatAgency
-import com.bankaccenture.ui.extensions.formataParaMoedaBrasileira
-import com.bankaccenture.ui.recyclerview.adapter.HomeListaAdapter
+import com.bankaccenture.ui.extensions.formatForCoinBrazilian
+import com.bankaccenture.ui.recyclerview.adapter.HomeRecyclerAdapter
 import com.bankaccenture.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.home_fragment.*
 import org.koin.android.ext.android.inject
@@ -21,9 +21,9 @@ import org.koin.android.ext.android.inject
 class HomeFragment : Fragment() {
 
     private val viewModel by inject<HomeViewModel>()
-    private val adapter by inject<HomeListaAdapter>()
+    private val adapter by inject<HomeRecyclerAdapter>()
     private val arguments by navArgs<HomeFragmentArgs>()
-    private val contaUsuario by lazy { arguments.usuario }
+    private val userAccount by lazy { arguments.user }
     private val controller by lazy { findNavController() }
 
     override fun onCreateView(
@@ -35,41 +35,41 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        esconderTeclado()
-        configuraReclyerView()
-        buscarTrasacoes()
-        instanciaCampos()
-        configuraBotaoLogout()
+        hideKeyboard()
+        setterRecyclerView()
+        searchTransactions()
+        setterFields()
+        setterButtonLogout()
     }
 
-    private fun esconderTeclado() {
+    private fun hideKeyboard() {
         val inputMethodManager: InputMethodManager =
             activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(getView()?.windowToken, 0)
+        inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
-    private fun configuraReclyerView() {
+    private fun setterRecyclerView() {
         home_recycler_view.adapter = adapter
     }
 
-    private fun buscarTrasacoes() {
-        contaUsuario.userId?.let { id ->
-            viewModel.todasTrasacoes(id).observe(viewLifecycleOwner, Observer {
-                it?.let {
-                    adapter.add(it)
+    private fun searchTransactions() {
+        userAccount.userId?.let { id ->
+            viewModel.allTransaction(id).observe(viewLifecycleOwner, Observer {
+                it?.let { listTransactionsNotNull ->
+                    adapter.add(listTransactionsNotNull)
                 }
             })
         }
     }
 
-    private fun instanciaCampos() {
-        home_textview_usuario_nome.text = contaUsuario.name
-        home_textview_usuario_conta.text =
-            contaUsuario.bankAccount + "/ " + contaUsuario.agency?.formatAgency()
-        home_textview_usuario_balanco.text = contaUsuario.balance?.formataParaMoedaBrasileira()
+    private fun setterFields() {
+        home_textview_user_name.text = userAccount.name
+        home_textview_user_account.text =
+            userAccount.bankAccount + "/ " + userAccount.agency?.formatAgency()
+        home_textview_balance.text = userAccount.balance?.formatForCoinBrazilian()
     }
 
-    private fun configuraBotaoLogout() {
+    private fun setterButtonLogout() {
         home_bt_logout.setOnClickListener {
             val directions =
                 HomeFragmentDirections.actionHomeFragmentToLoginFragment()

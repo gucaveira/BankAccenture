@@ -3,7 +3,7 @@ package com.bankaccenture.model
 import java.io.Serializable
 import java.math.BigDecimal
 
-data class Transacao(
+data class Transaction(
     val title: String? = null,
     val desc: String? = null,
     val date: String? = null,

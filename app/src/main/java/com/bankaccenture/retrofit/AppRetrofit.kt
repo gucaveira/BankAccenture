@@ -10,17 +10,17 @@ private const val BASE_URL: String = "https://bank-app-test.herokuapp.com/api/"
 
 class AppRetrofit {
 
-    private val cliente by lazy {
-        val interceptador = HttpLoggingInterceptor()
-        interceptador.level = HttpLoggingInterceptor.Level.BODY
-        OkHttpClient.Builder().addInterceptor(interceptador).build()
+    private val client by lazy {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.level = HttpLoggingInterceptor.Level.BODY
+        OkHttpClient.Builder().addInterceptor(interceptor).build()
     }
 
     private val retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .client(cliente)
+            .client(client)
             .build()
     }
 

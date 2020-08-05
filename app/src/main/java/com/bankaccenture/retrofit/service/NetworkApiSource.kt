@@ -1,8 +1,8 @@
 package com.bankaccenture.retrofit.service
 
-import com.bankaccenture.model.ContaUsuario
+import com.bankaccenture.model.UserAccount
 import com.bankaccenture.retrofit.webclient.ResponseLogin
-import com.bankaccenture.retrofit.webclient.ResponseTransacao
+import com.bankaccenture.retrofit.webclient.ResponseTransactions
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -12,9 +12,9 @@ interface NetworkApiSource {
     @POST("login")
     fun login(
         @Field("user") login: String,
-        @Field("password") pass: String
-    ): Call<ResponseLogin<ContaUsuario>>
+        @Field("password") password: String
+    ): Call<ResponseLogin<UserAccount>>
 
     @GET("statements/{id}")
-    fun getListaTrasacoes(@Path("id") usuarioId: Int): Call<ResponseTransacao>
+    fun getListTransactions(@Path("id") userId: Int): Call<ResponseTransactions>
 }
