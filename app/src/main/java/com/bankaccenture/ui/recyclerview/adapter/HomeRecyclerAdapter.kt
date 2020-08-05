@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bankaccenture.R
 import com.bankaccenture.model.Transaction
+import com.bankaccenture.ui.extensions.formatDataForBrazilian
 import com.bankaccenture.ui.extensions.formatForCoinBrazilian
 import kotlinx.android.synthetic.main.item_transacoes.view.*
 
@@ -59,7 +60,7 @@ class HomeRecyclerAdapter(
         fun bind(Transaction: Transaction) {
             title.text = Transaction.title
             desc.text = Transaction.desc
-            date.text = Transaction.date//.formatDataForBrazilian()
+            date.text = Transaction.date?.formatDataForBrazilian()
             value.text = Transaction.value?.formatForCoinBrazilian()
         }
     }
